@@ -3,6 +3,7 @@ package model.dao;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import model.bean.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -14,6 +15,7 @@ public class CategoriaDAOTest {
     }
 
     @Test
+    @Ignore   //ignora o método abaixo, para testar o seguinte
     public void inserir() {
 
         Categoria cat = new Categoria("Roupas");
@@ -25,7 +27,16 @@ public class CategoriaDAOTest {
         } else {
             fail("Erro ao salvar!");
         }
+    }
 
+    @Test   //necessário para testar com o JUnit
+    public void listar() {
+        CategoriaDAO dao = new CategoriaDAO();
+
+        for (Categoria cat : dao.buscaTodos()) { //realizando o forEach na lista
+            System.out.println("Descrição: " + cat.getDescricao());
+
+        }
     }
 
 }
