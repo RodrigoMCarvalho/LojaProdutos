@@ -34,6 +34,39 @@ public class CategoriaDAO {
         }
     }
 
+    public boolean alterar(Categoria categoria) {
+        String sql = "UPDATE categoria SET descricao = ? WHERE id = ? ";
+        try {
+            stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, categoria.getDescricao());
+            stmt.setInt(2, categoria.getId());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            System.err.println("Erro: " + ex);
+            return false;
+        } finally {
+            ConnectionFactory.closeConnection(conexao, stmt);
+        }
+    }
+
+    public boolean remover(Categoria categoria) {
+        String sql = "DELETE FROM categoria WHERE id=?";
+
+        try {
+            stmt = conexao.prepareStatement(sql);
+            stmt.setInt(1, categoria.getId());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            System.err.println("Erro: " + ex);
+            return false;
+        } finally {
+            ConnectionFactory.closeConnection(conexao, stmt); //chama método para fechar a conexão
+        }
+
+    }
+
     public List<Categoria> buscaTodos() {
         List<Categoria> ListCat = new ArrayList<>(); //lista para armazenar os dados do BD
         String sql = "SELECT * FROM categoria";

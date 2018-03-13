@@ -20,10 +20,10 @@ public class ConnectionFactory {
     }
 
     //método para fechar a conexão(Connection)
-    public static void closeConnection(Connection con) {
-        if (con != null) {
+    public static void closeConnection(Connection conexao) {
+        if (conexao != null) {
             try {
-                con.close();
+                conexao.close();
             } catch (SQLException ex) {
                 System.err.println("Erro:" + ex);
             }

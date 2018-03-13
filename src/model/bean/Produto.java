@@ -6,7 +6,7 @@ public class Produto {
     private String descricao;
     private int qtd;
     private double valor;
-    private Categoria categoria;
+    private Categoria categoria; //será obtido posteriormente o ID da classe Categoria, utilizando POO
 
     public Produto() {
     }
