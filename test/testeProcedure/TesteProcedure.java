@@ -13,8 +13,7 @@ public class TesteProcedure {
         for (Produto produto : produtos) {
             System.out.println("Descricao: " + produto.getDescricao()
                     + " - Quantidade:" + produto.getQtd()
-                    + " - Valor:" + produto.getValor());
+                    + " - Valor: R$" + produto.getValor());
         }
     }
-
 }
