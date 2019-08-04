@@ -13,6 +13,7 @@ public class ProdutoDAO {
     private Connection conexao = null;
     PreparedStatement stmt = null;
     ResultSet rs = null;
+    CallableStatement cs = null;
 
     public ProdutoDAO() {
         conexao = ConnectionFactory.getConnection();
@@ -54,7 +55,7 @@ public class ProdutoDAO {
 
     public List<Produto> BuscaTodos() {
         List<Produto> listProd = new ArrayList<>();
-        String sql = "SELECT * FROM vw_produto_categoria";
+        String sql = "SELECT * FROM vw_produto_categoria";  //select usando a VIEW criada no MySql
 
         try {
             stmt = conexao.prepareStatement(sql);
@@ -78,8 +79,35 @@ public class ProdutoDAO {
         } catch (SQLException ex) {
             System.err.println("Erro:" + ex);
         } finally {
-            ConnectionFactory.closeConnection(conexao, stmt);
+            ConnectionFactory.closeConnection(conexao, stmt);  //fecha a conexão
         }
         return listProd;
     }
+
+    public List<Produto> buscarProdutosProcedure(String nome) {
+        List<Produto> produtos = new ArrayList<>();
+        String procedure = "CALL `dbloja`.`sp_find_produtos`(?)";
+        try {
+            cs = conexao.prepareCall(procedure);
+            cs.setString(1, "%" + nome + "%");
+            cs.executeQuery();
+            rs = cs.executeQuery();
+            while (rs.next()) {         //obtém os dados da tabela produto
+                Produto produto = new Produto();
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setQtd(rs.getInt("qtd"));
+                produto.setValor(rs.getDouble("valor"));
+
+                produtos.add(produto);       //adiciona os dados das tabelas na lista criada
+            }
+            return produtos;
+        } catch (SQLException ex) {
+            System.err.println("Erro: " + ex);
+            //a linha abaixo fecha a conexão criada
+        } finally {
+            ConnectionFactory.closeConnection(conexao, stmt);
+        }
+        return null;
+    }
+
 }
